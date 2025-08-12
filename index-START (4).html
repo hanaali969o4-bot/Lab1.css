@@ -34,34 +34,33 @@
       'Biondo, Frank'
     ];
 
-    // دالة لطباعة النتائج بشكل منظم وملون
+    
     function printResult(title, data) {
       console.log(`%c${title}`, 'color: white; background: #007acc; padding: 4px; border-radius: 4px;');
       console.log(data);
       console.log('---------------------------------------------');
     }
 
-    // 1. المخترعين المولودين في القرن 16
+    
     const fifteen = inventors.filter(inv => inv.year >= 1500 && inv.year < 1600);
     printResult("1. Inventors born in the 1500's", fifteen);
 
-    // 2. الأسماء الكاملة
+    
     const fullNames = inventors.map(inv => `${inv.first} ${inv.last}`);
     printResult("2. Full names", fullNames);
 
-    // 3. ترتيبهم حسب تاريخ الميلاد
+    
     const ordered = inventors.slice().sort((a, b) => a.year - b.year);
     printResult("3. Sorted by birthdate", ordered);
 
-    // 4. مجموع عدد السنين اللي عاشوها
+    
     const totalYears = inventors.reduce((total, inv) => total + (inv.passed - inv.year), 0);
     printResult("4. Total years lived", totalYears);
 
-    // 5. ترتيبهم حسب عدد السنين اللي عاشوها
     const oldest = inventors.slice().sort((a, b) => (b.passed - b.year) - (a.passed - a.year));
     printResult("5. Sorted by years lived", oldest);
 
-    // 6. ترتيب الأشخاص أبجدياً بالاسم الأخير
+    
     const alpha = people.slice().sort((a, b) => {
       const [aLast] = a.split(', ');
       const [bLast] = b.split(', ');
