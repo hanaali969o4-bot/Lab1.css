@@ -1,63 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
-  <link rel="stylesheet" href="ccc.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drum Kit</title>
+  <style>
+    
+    :root{
+      --bg:#0c0d13;          
+      --bg-soft:#12131b;      
+      --text:#e9eaf2;         
+      --muted:#9aa0a6;        
+      --accent:#7c5cff;       
+      --accent2:#22d3ee;      
+      --ring:0 0 0 8px rgba(124,92,255,.18);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(900px 900px at 15% -10%, rgba(124,92,255,.18), transparent 60%),
+        radial-gradient(700px 700px at 110% 10%, rgba(34,211,238,.18), transparent 55%),
+        linear-gradient(180deg, #0a0b10 0%, #0e1018 60%, #0b0c13 100%);
+      display:flex; flex-direction:column; align-items:center; gap:22px; padding:32px 16px 56px;
+    }
+
+    header{max-width:1040px; width:100%; text-align:center}
+    h1{margin:0 0 6px; font-size:clamp(26px, 3.2vw, 42px); font-weight:800; letter-spacing:.3px}
+    p.subtitle{margin:0; color:var(--muted)}
+
+    .toolbar{display:flex; justify-content:center; align-items:center; gap:10px; margin-top:16px; flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(90deg, var(--accent), var(--accent2));
+      color:#fff; border:none; padding:10px 14px; border-radius:14px; font-weight:700; cursor:pointer;
+      box-shadow:0 10px 30px rgba(124,92,255,.28); transition: transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0) scale(.98)}
+
+    
+    .stage{max-width:1040px; width:100%; display:flex; justify-content:center; margin-top:10px}
+    .keys{
+      display:grid; gap:14px; grid-template-columns: repeat(9, minmax(92px, 1fr));
+    }
+    @media (max-width: 980px){
+      .keys{grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));}
+    }
+
+    .key{
+      background:linear-gradient(180deg, #171823, #10121a);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px; padding:18px 12px; text-align:center; user-select:none; cursor:pointer;
+      box-shadow: inset 0 -2px 0 rgba(255,255,255,.03), 0 12px 30px rgba(0,0,0,.35);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .25s ease;
+      position:relative;
+    }
+    .key:focus{outline:none}
+    .key kbd{display:block; font-weight:900; font-size:28px; letter-spacing:1px; margin-bottom:6px;
+             background:rgba(124,92,255,.15); border:1px solid rgba(124,92,255,.35); padding:6px 12px; border-radius:12px}
+    .key .label{display:block; font-size:13px; color:var(--muted); letter-spacing:.5px}
+    .key.active{transform:translateY(-4px) scale(1.02);
+                border-color:rgba(34,211,238,.55);
+                box-shadow: var(--ring), 0 18px 46px rgba(34,211,238,.28)}
+
+    footer{opacity:.85; font-size:12px; margin-top:8px}
+
+    .hint{color:var(--muted); margin-top:8px; font-size:14px}
+
+    
+    .pill{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.08); color:var(--muted)}
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Play & Explore</h1>
+    <p class="subtitle"></p>
+    <div class="toolbar">
+      <button id="demoBtn" class="btn">play dum</button>
+      <span class="pill"></span>
+    </div>
+  </header>
 
-  <div class="keys">
-    <div data-key="65" class="key">
-      <kbd>A</kbd>
-      <span class="sound">clap</span>
-    </div>
-    <div data-key="83" class="key">
-      <kbd>S</kbd>
-      <span class="sound">hihat</span>
-    </div>
-    <div data-key="68" class="key">
-      <kbd>D</kbd>
-      <span class="sound">kick</span>
-    </div>
-    <div data-key="70" class="key">
-      <kbd>F</kbd>
-      <span class="sound">openhat</span>
-    </div>
-    <div data-key="71" class="key">
-      <kbd>G</kbd>
-      <span class="sound">boom</span>
-    </div>
-    <div data-key="72" class="key">
-      <kbd>H</kbd>
-      <span class="sound">ride</span>
-    </div>
-    <div data-key="74" class="key">
-      <kbd>J</kbd>
-      <span class="sound">snare</span>
-    </div>
-    <div data-key="75" class="key">
-      <kbd>K</kbd>
-      <span class="sound">tom</span>
-    </div>
-    <div data-key="76" class="key">
-      <kbd>L</kbd>
-      <span class="sound">tink</span>
-    </div>
+  <div class="stage">
+    <div class="keys" id="keys"></div>
   </div>
 
-  <audio data-key="65" src="sounds/clap.wav"></audio>
-  <audio data-key="83" src="sounds/nihat.wav"></audio>
-  <audio data-key="68" src="sounds/kick.wav"></audio>
-  <audio data-key="70" src="sounds/openhat.wav"></audio>
-  <audio data-key="71" src="sounds/boom.wav"></audio>
-  <audio data-key="72" src="sounds/ride.wav"></audio>
-  <audio data-key="74" src="sounds/snare.wav"></audio>
-  <audio data-key="75" src="sounds/tom.wav"></audio>
-  <audio data-key="76" src="sounds/tink.wav"></audio>
+  <p class="hint"></p>
 
-  <script src="ccc.js"></script>
+  <footer>© 2025</footer>
+
+  
+  <audio data-key="65" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/clap.wav"></audio>
+  <audio data-key="83" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/hihat.wav"></audio>
+  <audio data-key="68" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/kick.wav"></audio>
+  <audio data-key="70" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/openhat.wav"></audio>
+  <audio data-key="71" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/boom.wav"></audio>
+  <audio data-key="72" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/ride.wav"></audio>
+  <audio data-key="74" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/snare.wav"></audio>
+  <audio data-key="75" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/tom.wav"></audio>
+  <audio data-key="76" src="https://raw.githubusercontent.com/wesbos/JavaScript30/master/01%20-%20JavaScript%20Drum%20Kit/sounds/tink.wav"></audio>
+
+  <script>
+    
+    const MAP = [
+      { code:65, key:'A', label:'CLAP' },
+      { code:83, key:'S', label:'HIHAT' },
+      { code:68, key:'D', label:'KICK' },
+      { code:70, key:'F', label:'OPENHAT' },
+      { code:71, key:'G', label:'BOOM' },
+      { code:72, key:'H', label:'RIDE' },
+      { code:74, key:'J', label:'SNARE' },
+      { code:75, key:'K', label:'TOM' },
+      { code:76, key:'L', label:'TINK' },
+    ];
+
+    const grid = document.getElementById('keys');
+
+    
+    grid.innerHTML = MAP.map(({code, key, label}) => `
+      <div class="key" data-key="${code}" role="button" tabindex="0" aria-label="${label}">
+        <kbd>${key}</kbd>
+        <span class="label">${label}</span>
+      </div>
+    `).join('');
+
+    function play(code){
+      const audio = document.querySelector(`audio[data-key="${code}"]`);
+      const key = document.querySelector(`.key[data-key="${code}"]`);
+      if(!audio || !key) return;
+      audio.currentTime = 0; 
+      const playPromise = audio.play();
+      if(playPromise && playPromise.catch){
+        
+        playPromise.catch(() => {});
+      }
+      key.classList.add('active');
+      setTimeout(() => key.classList.remove('active'), 160);
+    }
+
+    
+    window.addEventListener('keydown', (e) => {
+      
+      if(e.repeat) return;
+      play(e.keyCode);
+    });
+
+    
+    grid.addEventListener('click', (e) => {
+      const el = e.target.closest('.key');
+      if(el) play(Number(el.dataset.key));
+    });
+    grid.addEventListener('keydown', (e) => {
+      const el = e.target.closest('.key');
+      if(!el) return;
+      if(e.code === 'Enter' || e.code === 'Space'){
+        e.preventDefault();
+        play(Number(el.dataset.key));
+      }
+    });
+
+    document.getElementById('demoBtn').addEventListener('click', async () => {
+      const seq = [65,83,68,65, 70,71,72,74, 75,76];
+      for(const c of seq){
+        play(c);
+        
+        await new Promise(r => setTimeout(r, 140));
+      }
+    });
+  </script>
 </body>
 </html>
-c:\Users\Administrator\Desktop\Drum Kit
