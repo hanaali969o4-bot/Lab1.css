@@ -27,7 +27,7 @@
 
   <script>
     // -------------------------------
-    //  Promise Basics
+    //  Promise Basics
     // -------------------------------
     const helloPromise = new Promise((resolve) => {
       setTimeout(() => {
@@ -37,6 +37,7 @@
 
     helloPromise.then(message => {
       document.getElementById("promise-basics").textContent = message;
+      console.log("✅ Promise Basics: " + message);
     });
 
     // -------------------------------
@@ -45,45 +46,55 @@
     const numberPromise = Promise.resolve(5);
 
     numberPromise
-      .then(num => num * 2)    // 5 * 2 = 10
-      .then(num => num - 3)    // 10 - 3 = 7
+      .then(num => {
+        console.log("➡️ Chaining Step 1: " + num + " * 2 = " + (num * 2));
+        return num * 2;
+      })
+      .then(num => {
+        console.log("➡️ Chaining Step 2: " + num + " - 3 = " + (num - 3));
+        return num - 3;
+      })
       .then(result => {
         document.getElementById("promise-chaining").textContent = "Final Result: " + result;
+        console.log("✅ Final Chaining Result: " + result);
       });
 
     // -------------------------------
-    //  Error Handling
+    //  Error Handling
     // -------------------------------
     const errorPromise = Promise.reject("Something went wrong!");
 
     errorPromise.catch(err => {
       document.getElementById("error-handling").textContent = err;
+      console.error("❌ Error Handling: " + err);
     });
 
     // -------------------------------
-    //  Fetch API + Promises (.then())
+    //  Fetch API + Promises (.then())
     // -------------------------------
     fetch("https://dummyjson.com/products/1")
       .then(res => res.json())
       .then(data => {
         document.getElementById("fetch-then").textContent = data.title;
+        console.log("✅ Fetch .then(): " + data.title);
       })
       .catch(err => {
         document.getElementById("fetch-then").textContent = "Failed to load product";
-        console.error(err);
+        console.error("❌ Fetch .then() Error:", err);
       });
 
     // -------------------------------
-    //  Fetch API + Async/Await
+    //  Fetch API + Async/Await
     // -------------------------------
     async function fetchProductAsync() {
       try {
-        const response = await fetch("https://dummyjson.com/products/1");
+        const response = await fetch("https://dummyjson.com/products/2");
         const data = await response.json();
         document.getElementById("fetch-async").textContent = data.title;
+        console.log("✅ Async/Await: " + data.title);
       } catch (err) {
         document.getElementById("fetch-async").textContent = "Failed to load product";
-        console.error(err);
+        console.error("❌ Async/Await Error:", err);
       }
     }
     fetchProductAsync();
@@ -101,13 +112,15 @@
     .then(products => {
       document.getElementById("parallel1").textContent = "Product 1: " + products[0].title;
       document.getElementById("parallel2").textContent = "Product 2: " + products[1].title;
+      console.log("✅ Parallel Promises: Loaded both products successfully!");
+      console.log("   - Product 1: " + products[0].title);
+      console.log("   - Product 2: " + products[1].title);
     })
     .catch(err => {
       document.getElementById("parallel1").textContent = "Failed to load product 1";
       document.getElementById("parallel2").textContent = "Failed to load product 2";
-      console.error(err);
+      console.error("❌ Parallel Promises Error:", err);
     });
-
   </script>
 </body>
 </html>
