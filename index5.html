@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern JavaScript (ES6+) Practice</title>
+</head>
+<body>
+  <h1>Modern JavaScript Concepts</h1>
+  <p>Open the browser's **Console** (F12) to see the results of each task.</p>
+
+  <script>
+    console.log("---------------------------------------");
+    console.log("1. let & const");
+    console.log("---------------------------------------");
+    // Using let
+    let shoppingCart = ["Apples", "Milk"];
+    console.log("Initial cart (let):", shoppingCart);
+    shoppingCart = ["Apples", "Milk", "Discount Code: SAVE10"];
+    console.log("Updated cart with discount (let):", shoppingCart);
+
+    // Using const (will fail)
+    const anotherCart = ["Books", "Pens"];
+    console.log("Initial cart (const):", anotherCart);
+    try {
+      // anotherCart = ["Books", "Pens", "Coupon: FREE"]; // This line would cause an error
+      console.log("Attempting to reassign const will fail.");
+    } catch (e) {
+      console.log("Error caught:", e.message);
+    }
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("2. Arrow Functions");
+    console.log("---------------------------------------");
+    const calculateTax = (price) => price * 0.15;
+    console.log("Tax for 100:", calculateTax(100));
+    console.log("Tax for 250:", calculateTax(250));
+    console.log("Tax for 500:", calculateTax(500));
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("3. Template Literals");
+    console.log("---------------------------------------");
+    const logStudentGrade = (name, grade) => {
+      console.log(`Student ${name} has scored ${grade}% in the final exam.`);
+    };
+    logStudentGrade("Ahmed", 95);
+    logStudentGrade("Mona", 88);
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("4. Default Parameters");
+    console.log("---------------------------------------");
+    const applyDiscount = (price, discount = 0.1) => price - (price * discount);
+    console.log("Price 200 with default 10% discount:", applyDiscount(200));
+    console.log("Price 200 with 25% discount:", applyDiscount(200, 0.25));
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("5. Destructuring");
+    console.log("---------------------------------------");
+    const product = { title: "Book", author: "John Doe", price: 200 };
+    const { title, price } = product;
+    console.log(`The product "${title}" is priced at ${price} SAR.`);
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("6. Spread Operator");
+    console.log("---------------------------------------");
+    const array1 = ["Math", "English"];
+    const array2 = ["Science", "History"];
+    const subjects = [...array1, ...array2];
+    console.log("Merged subjects:", subjects);
+    const updatedSubjects = [...subjects, "PE"];
+    console.log("Subjects with PE added:", updatedSubjects);
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("7. Rest Parameters");
+    console.log("---------------------------------------");
+    const maxNumber = (...nums) => Math.max(...nums);
+    console.log("Largest number is:", maxNumber(5, 10, 3, 20, 15));
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("8. Enhanced Object Literals");
+    console.log("---------------------------------------");
+    const studentName = "Layla";
+    const studentGrade = 92;
+    const student = {
+      studentName, // Shorthand for: studentName: studentName
+      studentGrade, // Shorthand for: studentGrade: studentGrade
+      introduce() { // Shorthand for: introduce: function() { ... }
+        console.log(`Hi, I'm ${this.studentName} and my grade is ${this.studentGrade}`);
+      }
+    };
+    student.introduce();
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("9. Classes");
+    console.log("---------------------------------------");
+    class BankAccount {
+      constructor(initialBalance) {
+        this.balance = initialBalance;
+      }
+      deposit(amount) {
+        this.balance += amount;
+        console.log(`Deposited ${amount}. New balance is ${this.balance}`);
+      }
+      withdraw(amount) {
+        if (amount > this.balance) {
+          console.log("Insufficient funds!");
+        } else {
+          this.balance -= amount;
+          console.log(`Withdrew ${amount}. New balance is ${this.balance}`);
+        }
+      }
+    }
+    const myAccount = new BankAccount(1000);
+    myAccount.deposit(500);
+    myAccount.withdraw(200);
+    myAccount.withdraw(1500); // Should fail
+    console.log("\n");
+
+    console.log("---------------------------------------");
+    console.log("10. Promises");
+    console.log("---------------------------------------");
+    const fetchUser = () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ id: 1, name: "Ali" });
+        }, 1500);
+      });
+    };
+    fetchUser().then(user => {
+      console.log(`User found: ${user.name}`);
+    });
+  </script>
+</body>
+</html>
