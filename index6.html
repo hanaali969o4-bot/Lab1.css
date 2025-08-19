@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo App!</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 20px;
+      }
+      li {
+        margin: 5px;
+      }
+      .done {
+        text-decoration: line-through;
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Welcome to Our Todo App!</h2>
+    <input
+      type="text"
+      id="taskInput"
+      class="task-add"
+      placeholder="Enter Task"
+    />
+    <button onclick="addTask()">Add Task</button>
+    <ul id="taskList"></ul>
+
+    <script>
+      /*
+Algorithm:
+1- Take the input from the user 
+2- create a list Item (li) with the user input
+3- create a button with each li
+4- save the list item in the localstorage 
+5- reset the input field to empty string
+6- if the user click on the button delete item: 
+        -remove the li from the ul 
+        -remove it from the local storage
+*/
+
+      const taskInput = document.getElementById("taskInput");
+      const taskList = document.getElementById("taskList");
+
+      window.onload = () => {
+        const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        savedTasks.forEach((element) => {
+          createTask(element);
+        });
+      };
+
+      //takes the input and pass it to create task to append to the ul
+      function addTask() {
+        const text = taskInput.value;
+        if (!text) return;
+        createTask(text); //responsible for creating the task (li) in the task list (ul)
+        saveTasks(); //responsible for saving the task in the local storage
+        taskInput.value = ""; // reset the task input to an empty string
+      }
+
+      //append the task (li) in the (ul) with a del button
+      function createTask(text) {
+        const li = document.createElement("li");
+        li.textContent = text;
+        li.onclick = () => {
+          li.classList.toggle("done");
+        };
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "X";
+        delBtn.onclick = () => {
+          li.remove();
+          //note you will add the function here
+          saveTasks();
+        };
+
+        li.appendChild(delBtn);
+        taskList.appendChild(li);
+      }
+
+      //this one save the tasks in the localstorage
+      function saveTasks() {
+        const tasks = Array.from(taskList.querySelectorAll("li")).map((li) => {
+          li.childNodes[0].textContent;
+        });
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+    </script>
+  </body>
+</html>
